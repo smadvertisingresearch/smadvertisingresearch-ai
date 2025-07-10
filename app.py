@@ -10,7 +10,7 @@ app = Flask(__name__)
 app.secret_key = 'rio_sophie_claire_secure_key_2024'
 
 def init_db():
-    conn = sqlite3.connect('likes.db')
+    conn = sqlite3.connect('likes_ai.db')
     cursor = conn.cursor()
     
     # Create records table (videos and ads)
@@ -40,7 +40,7 @@ def init_db():
 
 def load_videos():
     """Load videos from filesystem into database"""
-    conn = sqlite3.connect('likes.db')
+    conn = sqlite3.connect('likes_ai.db')
     cursor = conn.cursor()
 
     video_files = []
@@ -148,7 +148,7 @@ def load_videos():
 
 def create_video_sequence():
     """Create a sequence following the pattern: 2 videos, 1 ad, repeat"""
-    conn = sqlite3.connect('likes.db')
+    conn = sqlite3.connect('likes_ai.db')
     cursor = conn.cursor()
     
     # Get all videos and ads
@@ -277,7 +277,7 @@ def toggle_like():
         if not video_id:
             return jsonify({'error': 'Missing video_id'}), 400
         
-        conn = sqlite3.connect('likes.db')
+        conn = sqlite3.connect('likes_ai.db')
         cursor = conn.cursor()
         
         # Verify video exists
@@ -528,7 +528,7 @@ def admin():
 def reset_stats():
     """Reset all statistics"""
     try:
-        conn = sqlite3.connect('likes.db')
+        conn = sqlite3.connect('likes_ai.db')
         cursor = conn.cursor()
         
         # Clear all likes
@@ -566,7 +566,7 @@ def serve_root_video(filename):
 def get_stats():
     """Get statistics for admin panel"""
     try:
-        conn = sqlite3.connect('likes.db')
+        conn = sqlite3.connect('likes_ai.db')
         cursor = conn.cursor()
         
         # Get total videos and ads count
@@ -629,5 +629,5 @@ if __name__ == '__main__':
     print("Starting server...")
     print("Main site: http://localhost:5000")
     print("Admin panel: http://localhost:5000/admin")
-    print("To reset database completely, delete 'likes.db' file before running")
+    print("To reset database completely, delete 'likes_ai.db' file before running")
     app.run(debug=True, host='0.0.0.0', port=5000)
