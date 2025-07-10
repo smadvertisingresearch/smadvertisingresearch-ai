@@ -10,7 +10,7 @@ app = Flask(__name__)
 app.secret_key = 'rio_sophie_claire_secure_key_2024'
 
 def init_db():
-    conn = sqlite3.connect('likes_ai.db')
+    conn = sqlite3.connect('likes.db')
     cursor = conn.cursor()
     
     # Create records table (videos and ads)
@@ -40,7 +40,7 @@ def init_db():
 
 def load_videos():
     """Load videos from filesystem into database"""
-    conn = sqlite3.connect('likes_ai.db')
+    conn = sqlite3.connect('likes.db')
     cursor = conn.cursor()
 
     video_files = []
@@ -147,8 +147,8 @@ def load_videos():
     return added_count
 
 def create_video_sequence():
-    """Create a sequence following the pattern: 2 videos, 1 ad, repeat"""
-    conn = sqlite3.connect('likes_ai.db')
+    """Create a sequence following the pattern: 4 videos, 1 ad, repeat"""
+    conn = sqlite3.connect('likes.db')
     cursor = conn.cursor()
     
     # Get all videos and ads
@@ -179,15 +179,15 @@ def create_video_sequence():
     random.shuffle(video_list)
     random.shuffle(ad_list)
     
-    # Create the sequence: 2 videos, 1 ad, repeat
+    # Create the sequence: 4 videos, 1 ad, repeat
     sequence = []
     video_index = 0
     ad_index = 0
     
     while video_index < len(video_list) or ad_index < len(ad_list):
-        # Add 2 videos
+        # Add 4 videos
         videos_added = 0
-        while videos_added < 2 and video_index < len(video_list):
+        while videos_added < 4 and video_index < len(video_list):
             sequence.append(video_list[video_index])
             video_index += 1
             videos_added += 1
@@ -277,7 +277,7 @@ def toggle_like():
         if not video_id:
             return jsonify({'error': 'Missing video_id'}), 400
         
-        conn = sqlite3.connect('likes_ai.db')
+        conn = sqlite3.connect('likes.db')
         cursor = conn.cursor()
         
         # Verify video exists
@@ -334,7 +334,7 @@ def admin():
     <!DOCTYPE html>
     <html>
     <head>
-        <title>Admin Dashboard (AI)</title>
+        <title>Admin Dashboard (Machine-Learning)</title>
         <style>
             body { font-family: Arial, sans-serif; margin: 20px; }
             .stats { background: #f0f0f0; padding: 20px; margin: 20px 0; border-radius: 5px; }
@@ -355,7 +355,7 @@ def admin():
         </style>
     </head>
     <body>
-        <h1>Video Website Admin</h1>
+        <h1>Video Website Admin (Machine-Learning)</h1>
         <div class="status" id="status">Loading...</div>
         
         <div class="summary" id="summary">
@@ -425,7 +425,7 @@ def admin():
                         const previewItems = sequence.slice(0, 20); // Show first 20 items
                         const sequenceHTML = `
                             <h2>Video Sequence Preview (First 20 items)</h2>
-                            <p><strong>Pattern:</strong> 2 Videos → 1 Ad → Repeat</p>
+                            <p><strong>Pattern:</strong> 4 Videos → 1 Ad → Repeat</p>
                             <div>
                                 ${previewItems.map((item, index) => `
                                     <span class="sequence-item sequence-${item.is_ad ? 'ad' : 'video'}" title="${item.filename}">
@@ -528,7 +528,7 @@ def admin():
 def reset_stats():
     """Reset all statistics"""
     try:
-        conn = sqlite3.connect('likes_ai.db')
+        conn = sqlite3.connect('likes.db')
         cursor = conn.cursor()
         
         # Clear all likes
@@ -566,7 +566,7 @@ def serve_root_video(filename):
 def get_stats():
     """Get statistics for admin panel"""
     try:
-        conn = sqlite3.connect('likes_ai.db')
+        conn = sqlite3.connect('likes.db')
         cursor = conn.cursor()
         
         # Get total videos and ads count
@@ -627,7 +627,7 @@ if __name__ == '__main__':
     video_count = load_videos()
     print(f"Database initialized with {video_count} videos")
     print("Starting server...")
-    print("Main site: http://localhost:5000")
-    print("Admin panel: http://localhost:5000/admin")
-    print("To reset database completely, delete 'likes_ai.db' file before running")
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    print("Main site: http://localhost:8000")
+    print("Admin panel: http://localhost:8000/admin")
+    print("To reset database completely, delete 'likes.db' file before running")
+    app.run(debug=True, host='0.0.0.0', port=8000)
